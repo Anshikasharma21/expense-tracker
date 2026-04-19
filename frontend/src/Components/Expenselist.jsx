@@ -6,14 +6,18 @@ const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     fetchExpenses();
   }, []);
 
   const fetchExpenses = async () => {
     try {
-      const email = localStorage.getItem("email"); // fetch expenses for logged-in user
-      const res = await axios.get(`http://localhost:5000/api/expenses/${email}`);
+      const email = localStorage.getItem("email");
+
+      const res = await axios.get(`${API}/api/expenses/${email}`);
+
       setExpenses(res.data.expenses);
     } catch (err) {
       console.error(err);
@@ -21,7 +25,6 @@ const ExpenseList = () => {
   };
 
   const handleUpdate = (expense) => {
-    // Redirect to UpdateExpense page with the clicked expense data via state
     navigate("/updateexpense", { state: { expense } });
   };
 
@@ -42,6 +45,7 @@ const ExpenseList = () => {
                 <th>Update</th>
               </tr>
             </thead>
+
             <tbody>
               {expenses.map((exp, index) => (
                 <tr key={index}>
@@ -49,11 +53,14 @@ const ExpenseList = () => {
                   <td>{exp.amount}</td>
                   <td>{exp.date?.substring(0, 10)}</td>
                   <td>
-                    <button onClick={() => handleUpdate(exp)}>Update</button>
+                    <button onClick={() => handleUpdate(exp)}>
+                      Update
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         )}
       </div>

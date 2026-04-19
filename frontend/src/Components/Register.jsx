@@ -3,8 +3,10 @@ import "../App.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-  function Register() {
+function Register() {
   const navigate = useNavigate();
+
+  const API = import.meta.env.VITE_API_URL;
 
   const [form, setForm] = useState({
     username: "",
@@ -27,7 +29,7 @@ import { Link, useNavigate } from "react-router-dom";
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/create", form);
+      const res = await axios.post(`${API}/api/create`, form);
 
       setMessage(res.data.message);
 
@@ -37,14 +39,14 @@ import { Link, useNavigate } from "react-router-dom";
         }, 1000);
       }
 
-      } catch (err) {
-        if (err.response && err.response.data.message) {
-          setMessage(err.response.data.message);
-        } else {
-          setMessage("Error");
-        }
+    } catch (err) {
+      if (err.response && err.response.data.message) {
+        setMessage(err.response.data.message);
+      } else {
+        setMessage("Error");
       }
-    };
+    }
+  };
 
   return (
     <div className="container">

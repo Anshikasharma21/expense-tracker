@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 const AddExpense = () => {
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     email: "",
     title: "",
@@ -26,15 +28,13 @@ const AddExpense = () => {
     try {
       const email = localStorage.getItem("email");
 
-    
-      await axios.post("http://localhost:5000/api/expenses", {
+      await axios.post(`${API}/api/expenses`, {
         ...formData,
         email: email
       });
 
       alert("Expense Added Successfully");
 
-     
       navigate("/dashboard");
 
     } catch (err) {

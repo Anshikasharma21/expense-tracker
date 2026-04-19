@@ -6,6 +6,8 @@ const UpdateExpense = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     _id: "",
     title: "",
@@ -20,7 +22,7 @@ const UpdateExpense = () => {
       const expense = location.state.expense;
       setFormData({
         ...expense,
-        date: expense.date ? expense.date.substring(0, 10) : "" 
+        date: expense.date ? expense.date.substring(0, 10) : ""
       });
     }
   }, [location.state]);
@@ -32,7 +34,7 @@ const UpdateExpense = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/expenses/${formData._id}`, {
+      await axios.put(`${API}/api/expenses/${formData._id}`, {
         title: formData.title,
         amount: formData.amount,
         date: formData.date,
@@ -42,6 +44,7 @@ const UpdateExpense = () => {
 
       alert("Expense Updated Successfully");
       navigate("/dashboard");
+
     } catch (err) {
       console.error(err);
       alert("Error updating expense");
@@ -52,21 +55,44 @@ const UpdateExpense = () => {
     <div className="container">
       <div className="card">
         <h2>Update Expense</h2>
-      <form onSubmit={handleUpdate}>
-        <label>Title:</label>
-        <input type="text" name="title" value={formData.title} onChange={handleChange} required />
 
-        <label>Amount:</label>
-        <input type="number" name="amount" value={formData.amount} onChange={handleChange} required />
+        <form onSubmit={handleUpdate}>
+          <label>Title:</label>
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Date:</label>
-        <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+          <label>Amount:</label>
+          <input
+            type="number"
+            name="amount"
+            value={formData.amount}
+            onChange={handleChange}
+            required
+          />
 
-        <label>Description:</label>
-        <textarea name="description" value={formData.description} onChange={handleChange} />
+          <label>Date:</label>
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            required
+          />
 
-        <button type="submit">Update Expense</button>
-      </form>
+          <label>Description:</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+
+          <button type="submit">Update Expense</button>
+        </form>
       </div>
     </div>
   );
